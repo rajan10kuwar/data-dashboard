@@ -6,6 +6,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [cityName, setCityName] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [tempFilter, setTempFilter] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,9 +41,12 @@ const Dashboard = () => {
   const averageTemp = data.reduce((sum, item) => sum + item.temp, 0) / totalItems;
   const tempRange = `${Math.min(...data.map(item => item.temp))}°F - ${Math.max(...data.map(item => item.temp))}°F`;
 
-  // Filter data based on search query
+  // Filter data based on search query and temperature filter
   const filteredData = data.filter(item =>
-    item.datetime.toLowerCase().includes(searchQuery.toLowerCase())
+    item.datetime.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    (tempFilter === '' || 
+     (tempFilter === 'warm' && item.temp >= 70) ||
+     (tempFilter === 'cool' && item.temp < 70))
   );
 
   return (
@@ -56,6 +60,15 @@ const Dashboard = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           style={{ padding: '8px', marginBottom: '10px', width: '200px' }}
         />
+        <select
+          value={tempFilter}
+          onChange={(e) => setTempFilter(e.target.value)}
+          style={{ padding: '8px', marginLeft: '10px', width: '150px' }}
+        >
+          <option value="">All Temperatures</option>
+          <option value="warm">Warm (70°F+)</option>
+          <option value="cool">Cool (70°F)</option>
+        </select>
       </div>
       <div>
         <p>Total Items: {totalItems}</p>
