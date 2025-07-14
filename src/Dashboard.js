@@ -32,9 +32,19 @@ const Dashboard = () => {
     return <div>Loading...</div>;
   }
 
+  // Calculate summary statistics
+  const totalItems = data.length;
+  const averageTemp = data.reduce((sum, item) => sum + item.temp, 0) / totalItems;
+  const tempRange = `${Math.min(...data.map(item => item.temp))}°F - ${Math.max(...data.map(item => item.temp))}°F`;
+
   return (
     <div>
       <h1>Data Dashboard</h1>
+      <div>
+        <p>Total Items: {totalItems}</p>
+        <p>Average Temperature: {averageTemp.toFixed(1)}°F</p>
+        <p>Temperature Range: {tempRange}</p>
+      </div>
       <table>
         <thead>
           <tr>
