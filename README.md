@@ -2,7 +2,7 @@
 
 Submitted by: **Rajan Kuwar**
 
-This web app: **WeatherDash is a React-based dashboard that fetches and displays a 10-day weather forecast for a specified location (e.g., Raleigh, NC) using the WeatherBit API. It provides summary statistics, a searchable list of forecast days, and multiple filter options to explore the data interactively.**
+This web app: **WeatherDash is a React-based dashboard that fetches and displays a 15-day weather forecast for a specified location (e.g., Raleigh, NC) using the WeatherBit API. It provides summary statistics, a searchable list of forecast days, and multiple filter options to explore the data interactively.**
 
 Time spent: **8** hours spent in total
 
@@ -40,10 +40,10 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='VideoWalkthrough.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 <!-- Replace this with whatever GIF tool you used! -->
-GIF created with ...  
+GIF created with LICEcap
 <!-- Recommended tools:
 [Kap](https://getkap.co/) for macOS
 [ScreenToGif](https://www.screentogif.com/) for Windows
