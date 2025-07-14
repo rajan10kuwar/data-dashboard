@@ -7,6 +7,7 @@ const Dashboard = () => {
   const [cityName, setCityName] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [tempFilter, setTempFilter] = useState('');
+  const [tempRange, setTempRange] = useState([40, 100]); // Default range in °F
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,14 +40,15 @@ const Dashboard = () => {
   // Calculate summary statistics
   const totalItems = data.length;
   const averageTemp = data.reduce((sum, item) => sum + item.temp, 0) / totalItems;
-  const tempRange = `${Math.min(...data.map(item => item.temp))}°F - ${Math.max(...data.map(item => item.temp))}°F`;
+  const tempRangeStats = `${Math.min(...data.map(item => item.temp))}°F - ${Math.max(...data.map(item => item.temp))}°F`;
 
-  // Filter data based on search query and temperature filter
+  // Filter data based on multiple criteria
   const filteredData = data.filter(item =>
     item.datetime.toLowerCase().includes(searchQuery.toLowerCase()) &&
     (tempFilter === '' || 
      (tempFilter === 'warm' && item.temp >= 70) ||
-     (tempFilter === 'cool' && item.temp < 70))
+     (tempFilter === 'cool' && item.temp < 70)) &&
+    item.temp >= tempRange[0] && item.temp <= tempRange[1]
   );
 
   return (
@@ -69,11 +71,30 @@ const Dashboard = () => {
           <option value="warm">Warm (70°F+)</option>
           <option value="cool">Cool (70°F)</option>
         </select>
+        <div style={{ marginLeft: '10px', display: 'inline-block' }}>
+          <label>Temperature Range: {tempRange[0]}°F - {tempRange[1]}°F</label>
+          <input
+            type="range"
+            min="40"
+            max="100"
+            value={tempRange[0]}
+            onChange={(e) => setTempRange([parseInt(e.target.value), tempRange[1]])}
+            style={{ width: '100px', margin: '0 10px' }}
+          />
+          <input
+            type="range"
+            min="40"
+            max="100"
+            value={tempRange[1]}
+            onChange={(e) => setTempRange([tempRange[0], parseInt(e.target.value)])}
+            style={{ width: '100px' }}
+          />
+        </div>
       </div>
       <div>
         <p>Total Items: {totalItems}</p>
         <p>Average Temperature: {averageTemp.toFixed(1)}°F</p>
-        <p>Temperature Range: {tempRange}</p>
+        <p>Temperature Range: {tempRangeStats}</p>
       </div>
       <table>
         <thead>
