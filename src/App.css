@@ -66,3 +66,13 @@ body::before {
   opacity: 0.1;
   z-index: -1;
 }
+
+/* Sidebar styling */
+div[style*="width: 200px"] ul li {
+  margin: 15px 0; /* Add vertical spacing between sidebar links */
+}
+
+div[style*="width: 200px"] ul li a {
+  display: block; /* Ensure full width clickable */
+  padding: 5px 0; /* Add internal padding */
+}
