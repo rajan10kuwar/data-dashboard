@@ -33,6 +33,8 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [tempFilter, setTempFilter] = useState('');
   const [tempRange, setTempRange] = useState([40, 100]);
+  const [showCharts, setShowCharts] = useState(true); // Toggle visibility
+  const [chartType, setChartType] = useState('temperature'); // Toggle between chart types
 
   useEffect(() => {
     const fetchData = async () => {
@@ -166,8 +168,22 @@ const Dashboard = () => {
           <p>Temperature Range: {tempRangeStats}</p>
         </div>
         <div style={{ marginTop: '20px' }}>
-          <Line data={tempChartData} options={tempChartOptions} />
-          <Bar data={humidityChartData} options={humidityChartOptions} style={{ marginTop: '20px' }} />
+          <button
+            onClick={() => {
+              setShowCharts(!showCharts);
+              if (!showCharts) setChartType(chartType === 'temperature' ? 'humidity' : 'temperature');
+            }}
+            style={{ padding: '8px 16px', background: '#ffcc00', color: '#1a0033', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+          >
+            {showCharts ? 'Hide Charts' : 'Show Charts'}
+          </button>
+          {showCharts && (
+            chartType === 'temperature' ? (
+              <Line data={tempChartData} options={tempChartOptions} />
+            ) : (
+              <Bar data={humidityChartData} options={humidityChartOptions} />
+            )
+          )}
         </div>
         <table>
           <thead>
