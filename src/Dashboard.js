@@ -2,6 +2,29 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import { Line, Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -51,6 +74,50 @@ const Dashboard = () => {
     item.temp >= tempRange[0] && item.temp <= tempRange[1]
   );
 
+  // Chart Data for Temperature Trend
+  const tempChartData = {
+    labels: filteredData.map(item => item.datetime),
+    datasets: [{
+      label: 'Temperature (°F)',
+      data: filteredData.map(item => item.temp),
+      borderColor: '#ffcc00',
+      backgroundColor: 'rgba(255, 204, 0, 0.2)',
+      fill: true,
+      tension: 0.4,
+    }],
+  };
+
+  const tempChartOptions = {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+      title: { display: true, text: 'Temperature Trend Over 15 Days' },
+    },
+  };
+
+  // Chart Data for Humidity Levels
+  const humidityChartData = {
+    labels: filteredData.map(item => item.datetime),
+    datasets: [{
+      label: 'Humidity (%)',
+      data: filteredData.map(item => item.rh),
+      backgroundColor: 'rgba(0, 191, 255, 0.6)',
+      borderColor: 'rgba(0, 191, 255, 1)',
+      borderWidth: 1,
+    }],
+  };
+
+  const humidityChartOptions = {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+      title: { display: true, text: 'Humidity Levels Over 15 Days' },
+    },
+    scales: {
+      y: { beginAtZero: true, max: 100 },
+    },
+  };
+
   return (
     <div>
       <Sidebar />
@@ -97,6 +164,10 @@ const Dashboard = () => {
           <p>Total Items: {totalItems}</p>
           <p>Average Temperature: {averageTemp.toFixed(1)}°F</p>
           <p>Temperature Range: {tempRangeStats}</p>
+        </div>
+        <div style={{ marginTop: '20px' }}>
+          <Line data={tempChartData} options={tempChartOptions} />
+          <Bar data={humidityChartData} options={humidityChartOptions} style={{ marginTop: '20px' }} />
         </div>
         <table>
           <thead>
